@@ -1,0 +1,526 @@
+       /* ========================================
+           CSS VARIABLES & ROOT SETUP
+        ======================================== */
+        :root {
+            --color-blue: #00A1DE;
+            --color-yellow: #FAD201;
+            --color-green: #00A859;
+            --bg-primary: #ffffffba;
+            --bg-secondary: #f8f9fab1;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0d7;
+            --input-bg: #ffffff9a;
+            --input-border: #d0d0d0ce;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --imigongo-pattern: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><path d="M30 0 L45 15 L30 30 L15 15 Z M30 30 L45 45 L30 60 L15 45 Z" fill="rgba(0,161,222,0.03)" stroke="rgba(0,161,222,0.08)" stroke-width="0.5"/></svg>');
+        }
+
+        .dark {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --input-bg: #2d2d2d;
+            --input-border: #505050;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --imigongo-pattern: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><path d="M30 0 L45 15 L30 30 L15 15 Z M30 30 L45 45 L30 60 L15 45 Z" fill="rgba(0,161,222,0.05)" stroke="rgba(0,161,222,0.12)" stroke-width="0.5"/></svg>');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ========================================
+           ANIMATED BACKGROUND (SCREEN ONLY)
+        ======================================== */
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-20px) translateX(10px); }
+            66% { transform: translateY(-10px) translateX(-10px); }
+        }
+
+        .hill {
+            position: absolute;
+            bottom: 0;
+            border-radius: 50% 50% 0 0;
+            opacity: 0.15;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .hill-1 {
+            left: -10%;
+            width: 40%;
+            height: 200px;
+            background: var(--color-blue);
+            animation-delay: 0s;
+        }
+
+        .hill-2 {
+            right: -10%;
+            width: 50%;
+            height: 250px;
+            background: var(--color-green);
+            animation-delay: 2s;
+        }
+
+        .hill-3 {
+            left: 30%;
+            width: 35%;
+            height: 180px;
+            background: var(--color-yellow);
+            animation-delay: 4s;
+        }
+
+        /* ========================================
+           HEADER & NAVIGATION
+        ======================================== */
+        .header {
+            background: var(--bg-primary);
+            border-bottom: 3px solid var(--color-blue);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px var(--shadow);
+            background-image: var(--imigongo-pattern);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-blue);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--color-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0088bb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 161, 222, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--color-green);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #008a47;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--color-blue);
+            color: var(--color-blue);
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            padding: 0.3rem;
+            border-radius: 6px;
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 0.8rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--color-blue);
+            color: white;
+        }
+
+        /* ========================================
+           MAIN LAYOUT
+        ======================================== */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========================================
+           FORM SECTION
+        ======================================== */
+        .form-section {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px var(--shadow);
+            border-left: 4px solid var(--color-blue);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-yellow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--input-border);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-blue);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        .photo-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .photo-preview {
+            width: 100px;
+            height: 100px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--input-bg);
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .repeater-item {
+            background: var(--input-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .repeater-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .add-btn {
+            background: var(--color-green);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .add-btn:hover {
+            background: #008a47;
+        }
+
+        /* ========================================
+           PREVIEW SECTION
+        ======================================== */
+        .preview-section {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .cv-preview {
+            background: white;
+            color: #000;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .cv-header {
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid var(--color-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .cv-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            object-fit: cover;
+            border: 4px solid var(--color-blue);
+        }
+
+        .cv-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .cv-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .cv-section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-blue);
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 2px solid var(--color-yellow);
+        }
+
+        .cv-item {
+            margin-bottom: 1rem;
+        }
+
+        .cv-item-title {
+            font-weight: 700;
+            color: #000;
+        }
+
+        .cv-item-subtitle {
+            color: #555;
+            font-style: italic;
+            margin-bottom: 0.3rem;
+        }
+
+        .cv-item-description {
+            color: #333;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: var(--color-blue);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        /* ========================================
+           PRINT STYLES (PDF GENERATION)
+        ======================================== */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .animated-background,
+            .header,
+            .form-section,
+            .controls {
+                display: none !important;
+            }
+
+            .container {
+                display: block;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .preview-section {
+                position: static;
+                max-height: none;
+            }
+
+            .cv-preview {
+                box-shadow: none;
+                padding: 1rem;
+            }
+
+            @page {
+                margin: 1cm;
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .preview-section {
+                position: static;
+                max-height: none;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--color-blue);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
