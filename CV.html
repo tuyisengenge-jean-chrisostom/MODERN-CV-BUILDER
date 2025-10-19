@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern CV Builder | Gukora CV</title>
+    <link rel="stylesheet" href="cv.css"> 
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="hill hill-1"></div>
+        <div class="hill hill-2"></div>
+        <div class="hill hill-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo" id="appTitle">CV Builder Rwanda</div>
+            <div class="controls">
+                <div class="toggle-group">
+                    <button class="toggle-btn active" onclick="switchLanguage('en')" id="langEN">EN</button>
+                    <button class="toggle-btn" onclick="switchLanguage('rw')" id="langRW">RW</button>
+                </div>
+                <div class="toggle-group">
+                    <button class="toggle-btn active" onclick="switchTheme('light')" id="themeLight">☀️</button>
+                    <button class="toggle-btn" onclick="switchTheme('dark')" id="themeDark">🌙</button>
+                </div>
+                <button class="btn btn-outline" onclick="saveData()" id="btnSave">💾 Save</button>
+                <button class="btn btn-outline" onclick="loadData()" id="btnLoad">📂 Load</button>
+                <button class="btn btn-primary" onclick="downloadPDF()" id="btnDownload">📥 Download CV</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Form Section -->
+        <div class="form-section">
+            <form id="cvForm" onsubmit="return false;">
+                <!-- Personal Information -->
+                <div class="section-title" id="titlePersonal">👤 Personal Information</div>
+                
+                <div class="form-group">
+                     <div class="form-group">
+                    <label class="form-label" id="labelPhoto">Profile Photo</label>
+                    <div class="photo-upload">
+                        <div class="photo-preview" id="photoPreview">
+                            <span style="color: #999;">📷</span>
+                        </div>
+                        <input type="file" class="file-input" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
+                        <button type="button" class="btn btn-outline" onclick="document.getElementById('photoInput').click()" id="btnUploadPhoto">Upload Photo</button>
+                    </div>
+                    <label class="form-label" id="labelFullName">Full Name</label>
+                    <input type="text" class="form-input" id="fullName" placeholder="TUYISENGE Jean Chrisostom" oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="labelEmail">Email</label>
+                    <input type="email" class="form-input" id="email" placeholder="tuyisengejeanchrisostome@gmail.com" oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="labelPhone">Phone</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="+250 7XX XXX XXX" oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="labelLocation">Location</label>
+                    <input type="text" class="form-input" id="location" placeholder="Kigali, Rwanda" oninput="updatePreview()">
+                </div>
+                </div>
+                <!-- Professional Summary -->
+                <div class="section-title" id="titleSummary">📝 Professional Summary</div>
+                
+                <div class="form-group">
+                    <label class="form-label" id="labelSummary">Summary / Objective</label>
+                    <textarea class="form-textarea" id="summary" oninput="updatePreview()" placeholder="Try to write shortnote related to your career and your aim."></textarea>
+                    <div class="help-text" id="helpSummary">Mention your commitment to your profession and your contribution.</div>
+                </div>
+
+                <!-- Education -->
+                <div class="section-title" id="titleEducation">🎓 Education</div>
+                
+                <div id="educationList"></div>
+                <button type="button" class="add-btn" onclick="addEducation()" id="btnAddEducation">+ Add Education</button>
+                <div class="help-text" id="helpEducation">Include school/college,University, IPRC, or other recognized institutions</div>
+
+                <!-- Work Experience -->
+                <div class="section-title" id="titleExperience">💼 Work Experience</div>
+                
+                <div id="experienceList"></div>
+                <button type="button" class="add-btn" onclick="addExperience()" id="btnAddExperience">+ Add Experience</button>
+                <div class="help-text" id="helpExperience">Use quantifiable metrics (Imihigo): numbers, percentages, targets achieved</div>
+
+                <!-- Skills -->
+                <div class="section-title" id="titleSkills">⚡ Skills</div>
+                
+                <div class="form-group">
+                    <label class="form-label" id="labelTechnicalSkills">Technical Skills</label>
+                    <textarea class="form-textarea" id="technicalSkills" oninput="updatePreview()" placeholder="MS Office, Excel, PowerPoint, Data Analysis, Python, SQL..."></textarea>
+                    <div class="help-text" id="helpTechnicalSkills">Examples: ICT, Teaching, programming languages</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="labelLanguages">Language Fluency</label>
+                    <input type="text" class="form-input" id="languages" placeholder="Kinyarwanda(Native),English(Advanced),French(Intermediate)" oninput="updatePreview()">
+                </div>
+
+                <!-- Community & Civic Engagement -->
+                <div class="section-title" id="titleCommunity">🤝 Community & Civic Engagement</div>
+                
+                <div class="form-group">
+                    <label class="form-label" id="labelCommunity">Activities (Optional)</label>
+                    <textarea class="form-textarea" id="community" oninput="updatePreview()" placeholder="Umuganda participation, youth mentorship, community development projects..."></textarea>
+                    <div class="help-text" id="helpCommunity">Umuganda, cooperatives, volunteer work, civic initiatives</div>
+                </div>
+
+                <!-- References -->
+                <div class="section-title" id="titleReferences">📞 Professional References</div>
+                
+                <div id="referencesList"></div>
+                <button type="button" class="add-btn" onclick="addReference()" id="btnAddReference">+ Add Reference</button>
+                <div class="help-text" id="helpReferences">At least 2 references with local contact information</div>
+            </form>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <div class="cv-preview" id="cvPreview">
+                <div class="cv-header">
+                    <div id="previewPhoto"></div>
+                    <div class="cv-name" id="previewName">Your Name</div>
+                    <div id="previewContact"></div>
+                </div>
+
+                <div class="cv-section" id="previewSummarySection" style="display: none;">
+                    <div class="cv-section-title" id="previewSummaryTitle">Professional Summary</div>
+                    <div id="previewSummary"></div>
+                </div>
+
+                <div class="cv-section" id="previewEducationSection" style="display: none;">
+                    <div class="cv-section-title" id="previewEducationTitle">Education</div>
+                    <div id="previewEducation"></div>
+                </div>
+
+                <div class="cv-section" id="previewExperienceSection" style="display: none;">
+                    <div class="cv-section-title" id="previewExperienceTitle">Work Experience</div>
+                    <div id="previewExperience"></div>
+                </div>
+
+                <div class="cv-section" id="previewSkillsSection" style="display: none;">
+                    <div class="cv-section-title" id="previewSkillsTitle">Skills</div>
+                    <div id="previewSkills"></div>
+                </div>
+
+                <div class="cv-section" id="previewCommunitySection" style="display: none;">
+                    <div class="cv-section-title" id="previewCommunityTitle">Community Engagement</div>
+                    <div id="previewCommunity"></div>
+                </div>
+
+                <div class="cv-section" id="previewReferencesSection" style="display: none;">
+                    <div class="cv-section-title" id="previewReferencesTitle">References</div>
+                    <div id="previewReferences"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // TRANSLATIONS
+        // ========================================
+        const translations = {
+            en: {
+                appTitle: "CV Builder",
+                langEN: "EN",
+                langRW: "RW",
+                themeLight: "☀️",
+                themeDark: "🌙",
+                btnSave: "💾 Save",
+                btnLoad: "📂 Load",
+                btnDownload: "📥 Download CV",
+                titlePersonal: "👤 Personal Information",
+                labelFullName: "Full Name",
+                labelEmail: "Email",
+                labelPhone: "Phone",
+                labelLocation: "Location",
+                labelPhoto: "Profile Photo (Optional)",
+                btnUploadPhoto: "Upload Photo",
+                titleSummary: "📝 Professional Summary",
+                labelSummary: "Summary / Objective",
+                helpSummary: "Mention your commitment to national development, Unity & Reconciliation",
+                titleEducation: "🎓 Education",
+                btnAddEducation: "+ Add Education",
+                helpEducation: "Include UR, IPRC, WDA, or other recognized institutions",
+                titleExperience: "💼 Work Experience",
+                btnAddExperience: "+ Add Experience",
+                helpExperience: "Use quantifiable metrics (Imihigo-style): numbers, percentages, targets achieved",
+                titleSkills: "⚡ Skills",
+                labelTechnicalSkills: "Technical Skills",
+                helpTechnicalSkills: "List ICT, data tools, software, programming languages",
+                labelLanguages: "Language Fluency",
+                titleCommunity: "🤝 Community & Civic Engagement",
+                labelCommunity: "Activities (Optional)",
+                helpCommunity: "Umuganda, cooperatives, volunteer work, civic initiatives",
+                titleReferences: "📞 Professional References",
+                btnAddReference: "+ Add Reference",
+                helpReferences: "At least 2 references with local contact information",
+                labelDegree: "Degree / Certificate",
+                labelInstitution: "Institution",
+                labelYearGrad: "Graduation Year",
+                labelJobTitle: "Job Title",
+                labelCompany: "Company / Organization",
+                labelPeriod: "Period",
+                labelDescription: "Description & Achievements",
+                labelRefName: "Reference Name",
+                labelRefTitle: "Title / Position",
+                labelRefOrg: "Organization",
+                labelRefPhone: "Phone",
+                labelRefEmail: "Email",
+                removeBtn: "Remove",
+                previewSummaryTitle: "Professional Summary",
+                previewEducationTitle: "Education",
+                previewExperienceTitle: "Work Experience",
+                previewSkillsTitle: "Skills",
+                previewCommunityTitle: "Community Engagement",
+                previewReferencesTitle: "References",
+                labelTechnicalSkillsPreview: "Technical Skills",
+                labelLanguagesPreview: "Languages"
+            },
+            rw: {
+                appTitle: "KORA CV Y' UMWUGA",
+                langEN: "EN",
+                langRW: "RW",
+                themeLight: "🔆",
+                themeDark: "🌙",
+                btnSave: "💾 Bika",
+                btnLoad: "📂 Fungura",
+                btnDownload: "📥 Kurura CV",
+                titlePersonal: "👤 Amakuru Bwite",
+                labelFullName: "Amazina Yombi",
+                labelEmail: "Imeyili",
+                labelPhone: "Telefoni",
+                labelLocation: "Aho utuye",
+                labelPhoto: "Ifoto yawe",
+                btnUploadPhoto: "Shyiramo Ifoto",
+                titleSummary: "📝 Incamake y'Umwuga",
+                labelSummary: "Incamake / Intego",
+                helpSummary: "Vuga ubwitange bwawe mu iterambere ry'igihugu, Ubumwe n'Ubwiyunge",
+                titleEducation: "🎓 Amashuri",
+                btnAddEducation: "+ Ongeraho Ishuri",
+                helpEducation: "Shyiramo UR, IPRC, WDA, cyangwa izindi nzego zemewe",
+                titleExperience: "💼 Uburambe bw'Akazi",
+                btnAddExperience: "+ Ongeraho Uburambe",
+                helpExperience: "Koresha imibare n'ibisobanuro (nk'Imihigo): imibare, ijanisha, intego zagezweho",
+                titleSkills: "⚡ Ubushobozi",
+                labelTechnicalSkills: "Ubushobozi bwa Tekiniki",
+                helpTechnicalSkills: "Andika ICT, ibikoresho by'amakuru, software, ururimi rwa programming",
+                labelLanguages: "Indimi",
+                titleCommunity: "🤝 Uruhare mu Muryango",
+                labelCommunity: "Ibikorwa (Ntabwo ari ngombwa)",
+                helpCommunity: "Umuganda, koperative, akazi k'ubuntu, ibikorwa by'abaturage",
+                titleReferences: "📞 Abahamya n' abemeza amakuru yawe",
+                btnAddReference: "+ Ongeraho Umuntu",
+                helpReferences: "Byibuze abantu 2 hamwe n'amakuru yabo",
+                labelDegree: "Impamyabumenyi / Icyemezo",
+                labelInstitution: "Ikigo",
+                labelYearGrad: "Umwaka w'impamyabumenyi(warangirijeho)",
+                labelJobTitle: "Umwanya w'Akazi",
+                labelCompany: "Sosiyete / Ikigo",
+                labelPeriod: "Igihe",
+                labelDescription: "Ibisobanuro & Ibyagezweho",
+                labelRefName: "Amazina",
+                labelRefTitle: "Umwanya",
+                labelRefOrg: "Ikigo",
+                labelRefPhone: "Telefoni",
+                labelRefEmail: "Imeyili",
+                removeBtn: "Kuraho",
+                previewSummaryTitle: "Incamake y'Umwuga",
+                previewEducationTitle: "Amashuri",
+                previewExperienceTitle: "Uburambe bw'Akazi",
+                previewSkillsTitle: "Ubushobozi",
+                previewCommunityTitle: "Uruhare mu Muryango",
+                previewReferencesTitle: "Abantu Bakugurira Icyizere",
+                labelTechnicalSkillsPreview: "Ubushobozi bwa Tekiniki",
+                labelLanguagesPreview: "Indimi"
+            }
+        };
+
+        // ========================================
+        // STATE MANAGEMENT
+        // ========================================
+        let currentLang = 'en';
+        let currentTheme = 'light';
+        let photoDataURL = null;
+        let educationItems = [];
+        let experienceItems = [];
+        let referenceItems = [];
+
+        // ========================================
+        // LANGUAGE & THEME SWITCHING
+        // ========================================
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('langEN').classList.toggle('active', lang === 'en');
+            document.getElementById('langRW').classList.toggle('active', lang === 'rw');
+            
+            // Update all translatable elements
+            const t = translations[lang];
+            for (let key in t) {
+                const el = document.getElementById(key);
+                if (el) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'BUTTON') {
+                        if (el.type === 'button' || el.tagName === 'BUTTON') {
+                            el.textContent = t[key];
+                        }
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            }
+            
+            updatePreview();
+        }
+
+        function switchTheme(theme) {
+            currentTheme = theme;
+            document.body.classList.toggle('dark', theme === 'dark');
+            document.getElementById('themeLight').classList.toggle('active', theme === 'light');
+            document.getElementById('themeDark').classList.toggle('active', theme === 'dark');
+        }
+
+        // ========================================
+        // PHOTO UPLOAD
+        // ========================================
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoDataURL = e.target.result;
+                    document.getElementById('photoPreview').innerHTML = `<img src="${photoDataURL}" alt="Photo">`;
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ========================================
+        // DYNAMIC SECTIONS (Education, Experience, References)
+        // ========================================
+        function addEducation() {
+            const t = translations[currentLang];
+            const id = Date.now();
+            educationItems.push({ id, degree: '', institution: '', year: '' });
+            
+            const html = `
+                <div class="repeater-item" id="edu-${id}">
+                    <div class="repeater-header">
+                        <strong>${t.titleEducation}</strong>
+                        <button class="remove-btn" onclick="removeEducation(${id})">${t.removeBtn}</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelDegree}</label>
+                        <input type="text" class="form-input" data-edu="${id}" data-field="degree" placeholder="Bachelor in Computer Science" oninput="updateEducationData(${id}, 'degree', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelInstitution}</label>
+                        <input type="text" class="form-input" data-edu="${id}" data-field="institution" placeholder="University of Rwanda (UR)" oninput="updateEducationData(${id}, 'institution', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelYearGrad}</label>
+                        <input type="text" class="form-input" data-edu="${id}" data-field="year" placeholder="2023" oninput="updateEducationData(${id}, 'year', this.value)">
+                    </div>
+                </div>
+            `;
+            document.getElementById('educationList').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeEducation(id) {
+            educationItems = educationItems.filter(item => item.id !== id);
+            document.getElementById(`edu-${id}`).remove();
+            updatePreview();
+        }
+
+        function updateEducationData(id, field, value) {
+            const item = educationItems.find(item => item.id === id);
+            if (item) {
+                item[field] = value;
+                updatePreview();
+            }
+        }
+
+        function addExperience() {
+            const t = translations[currentLang];
+            const id = Date.now();
+            experienceItems.push({ id, title: '', company: '', period: '', description: '' });
+            
+            const html = `
+                <div class="repeater-item" id="exp-${id}">
+                    <div class="repeater-header">
+                        <strong>${t.titleExperience}</strong>
+                        <button class="remove-btn" onclick="removeExperience(${id})">${t.removeBtn}</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelJobTitle}</label>
+                        <input type="text" class="form-input" placeholder="Data Analyst" oninput="updateExperienceData(${id}, 'title', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelCompany}</label>
+                        <input type="text" class="form-input" placeholder="Ministry of ICT & Innovation" oninput="updateExperienceData(${id}, 'company', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelPeriod}</label>
+                        <input type="text" class="form-input" placeholder="Jan 2021 - Present" oninput="updateExperienceData(${id}, 'period', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelDescription}</label>
+                        <textarea class="form-textarea" placeholder="Analyzed data for 50+ government projects, improving efficiency by 30%..." oninput="updateExperienceData(${id}, 'description', this.value)"></textarea>
+                    </div>
+                </div>
+            `;
+            document.getElementById('experienceList').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeExperience(id) {
+            experienceItems = experienceItems.filter(item => item.id !== id);
+            document.getElementById(`exp-${id}`).remove();
+            updatePreview();
+        }
+
+        function updateExperienceData(id, field, value) {
+            const item = experienceItems.find(item => item.id === id);
+            if (item) {
+                item[field] = value;
+                updatePreview();
+            }
+        }
+
+        function addReference() {
+            const t = translations[currentLang];
+            const id = Date.now();
+            referenceItems.push({ id, name: '', title: '', org: '', phone: '', email: '' });
+            
+            const html = `
+                <div class="repeater-item" id="ref-${id}">
+                    <div class="repeater-header">
+                        <strong>${t.titleReferences}</strong>
+                        <button class="remove-btn" onclick="removeReference(${id})">${t.removeBtn}</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelRefName}</label>
+                        <input type="text" class="form-input" placeholder="Dr. Marie Uwase" oninput="updateReferenceData(${id}, 'name', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelRefTitle}</label>
+                        <input type="text" class="form-input" placeholder="Director of HR" oninput="updateReferenceData(${id}, 'title', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelRefOrg}</label>
+                        <input type="text" class="form-input" placeholder="Rwanda Development Board" oninput="updateReferenceData(${id}, 'org', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelRefPhone}</label>
+                        <input type="tel" class="form-input" placeholder="+250 788 XXX XXX" oninput="updateReferenceData(${id}, 'phone', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">${t.labelRefEmail}</label>
+                        <input type="email" class="form-input" placeholder="m.uwase@rdb.rw" oninput="updateReferenceData(${id}, 'email', this.value)">
+                    </div>
+                </div>
+            `;
+            document.getElementById('referencesList').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeReference(id) {
+            referenceItems = referenceItems.filter(item => item.id !== id);
+            document.getElementById(`ref-${id}`).remove();
+            updatePreview();
+        }
+
+        function updateReferenceData(id, field, value) {
+            const item = referenceItems.find(item => item.id === id);
+            if (item) {
+                item[field] = value;
+                updatePreview();
+            }
+        }
+
+        // ========================================
+        // PREVIEW UPDATE
+        // ========================================
+        function updatePreview() {
+            const t = translations[currentLang];
+            const fullName = document.getElementById('fullName').value || t.labelFullName;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const location = document.getElementById('location').value;
+            const summary = document.getElementById('summary').value;
+            const technicalSkills = document.getElementById('technicalSkills').value;
+            const languages = document.getElementById('languages').value;
+            const community = document.getElementById('community').value;
+
+            // Name
+            document.getElementById('previewName').textContent = fullName;
+
+            // Contact
+            let contactHTML = '';
+            if (email) contactHTML += `📧 ${email}<br>`;
+            if (phone) contactHTML += `📱 ${phone}<br>`;
+            if (location) contactHTML += `📍 ${location}`;
+            document.getElementById('previewContact').innerHTML = contactHTML;
+
+            // Photo
+            if (photoDataURL) {
+                document.getElementById('previewPhoto').innerHTML = `<img src="${photoDataURL}" class="cv-photo" alt="Photo">`;
+            } else {
+                document.getElementById('previewPhoto').innerHTML = '';
+            }
+
+            // Summary
+            if (summary) {
+                document.getElementById('previewSummarySection').style.display = 'block';
+                document.getElementById('previewSummary').innerHTML = `<p>${summary}</p>`;
+                document.getElementById('previewSummaryTitle').textContent = t.previewSummaryTitle;
+            } else {
+                document.getElementById('previewSummarySection').style.display = 'none';
+            }
+
+            // Education
+            if (educationItems.length > 0 && educationItems.some(e => e.degree || e.institution)) {
+                document.getElementById('previewEducationSection').style.display = 'block';
+                let eduHTML = '';
+                educationItems.forEach(item => {
+                    if (item.degree || item.institution) {
+                        eduHTML += `
+                            <div class="cv-item">
+                                <div class="cv-item-title">${item.degree || 'Degree'}</div>
+                                <div class="cv-item-subtitle">${item.institution || 'Institution'} ${item.year ? '• ' + item.year : ''}</div>
+                            </div>
+                        `;
+                    }
+                });
+                document.getElementById('previewEducation').innerHTML = eduHTML;
+                document.getElementById('previewEducationTitle').textContent = t.previewEducationTitle;
+            } else {
+                document.getElementById('previewEducationSection').style.display = 'none';
+            }
+
+            // Experience
+            if (experienceItems.length > 0 && experienceItems.some(e => e.title || e.company)) {
+                document.getElementById('previewExperienceSection').style.display = 'block';
+                let expHTML = '';
+                experienceItems.forEach(item => {
+                    if (item.title || item.company) {
+                        expHTML += `
+                            <div class="cv-item">
+                                <div class="cv-item-title">${item.title || 'Job Title'}</div>
+                                <div class="cv-item-subtitle">${item.company || 'Company'} ${item.period ? '• ' + item.period : ''}</div>
+                                ${item.description ? `<div class="cv-item-description">${item.description}</div>` : ''}
+                            </div>
+                        `;
+                    }
+                });
+                document.getElementById('previewExperience').innerHTML = expHTML;
+                document.getElementById('previewExperienceTitle').textContent = t.previewExperienceTitle;
+            } else {
+                document.getElementById('previewExperienceSection').style.display = 'none';
+            }
+
+            // Skills
+            if (technicalSkills || languages) {
+                document.getElementById('previewSkillsSection').style.display = 'block';
+                let skillsHTML = '';
+                if (technicalSkills) {
+                    skillsHTML += `<div><strong>${t.labelTechnicalSkillsPreview}:</strong> ${technicalSkills}</div>`;
+                }
+                if (languages) {
+                    skillsHTML += `<div style="margin-top: 0.5rem;"><strong>${t.labelLanguagesPreview}:</strong> ${languages}</div>`;
+                }
+                document.getElementById('previewSkills').innerHTML = skillsHTML;
+                document.getElementById('previewSkillsTitle').textContent = t.previewSkillsTitle;
+            } else {
+                document.getElementById('previewSkillsSection').style.display = 'none';
+            }
+
+            // Community
+            if (community) {
+                document.getElementById('previewCommunitySection').style.display = 'block';
+                document.getElementById('previewCommunity').innerHTML = `<p>${community}</p>`;
+                document.getElementById('previewCommunityTitle').textContent = t.previewCommunityTitle;
+            } else {
+                document.getElementById('previewCommunitySection').style.display = 'none';
+            }
+
+            // References
+            if (referenceItems.length > 0 && referenceItems.some(r => r.name)) {
+                document.getElementById('previewReferencesSection').style.display = 'block';
+                let refHTML = '';
+                referenceItems.forEach(item => {
+                    if (item.name) {
+                        refHTML += `
+                            <div class="cv-item">
+                                <div class="cv-item-title">${item.name}</div>
+                                <div class="cv-item-subtitle">${item.title || ''} ${item.org ? '• ' + item.org : ''}</div>
+                                <div class="cv-item-description">
+                                    ${item.phone ? '📱 ' + item.phone : ''} 
+                                    ${item.email ? '📧 ' + item.email : ''}
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                document.getElementById('previewReferences').innerHTML = refHTML;
+                document.getElementById('previewReferencesTitle').textContent = t.previewReferencesTitle;
+            } else {
+                document.getElementById('previewReferencesSection').style.display = 'none';
+            }
+        }
+
+        // ========================================
+        // SAVE & LOAD (localStorage)
+        // ========================================
+        function saveData() {
+            const data = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                summary: document.getElementById('summary').value,
+                technicalSkills: document.getElementById('technicalSkills').value,
+                languages: document.getElementById('languages').value,
+                community: document.getElementById('community').value,
+                photoDataURL: photoDataURL,
+                educationItems: educationItems,
+                experienceItems: experienceItems,
+                referenceItems: referenceItems,
+                currentLang: currentLang,
+                currentTheme: currentTheme
+            };
+            
+            localStorage.setItem('cvBuilderData', JSON.stringify(data));
+            alert(currentLang === 'en' ? 'Data saved successfully!' : 'Amakuru yabitswe neza!');
+        }
+
+        function loadData() {
+            const dataStr = localStorage.getItem('cvBuilderData');
+            if (!dataStr) {
+                alert(currentLang === 'en' ? 'No saved data found.' : 'Nta makuru yabitswe.');
+                return;
+            }
+            
+            const data = JSON.parse(dataStr);
+            
+            document.getElementById('fullName').value = data.fullName || '';
+            document.getElementById('email').value = data.email || '';
+            document.getElementById('phone').value = data.phone || '';
+            document.getElementById('location').value = data.location || '';
+            document.getElementById('summary').value = data.summary || '';
+            document.getElementById('technicalSkills').value = data.technicalSkills || '';
+            document.getElementById('languages').value = data.languages || '';
+            document.getElementById('community').value = data.community || '';
+            
+            if (data.photoDataURL) {
+                photoDataURL = data.photoDataURL;
+                document.getElementById('photoPreview').innerHTML = `<img src="${photoDataURL}" alt="Photo">`;
+            }
+            
+            // Clear existing dynamic items
+            document.getElementById('educationList').innerHTML = '';
+            document.getElementById('experienceList').innerHTML = '';
+            document.getElementById('referencesList').innerHTML = '';
+            
+            educationItems = data.educationItems || [];
+            experienceItems = data.experienceItems || [];
+            referenceItems = data.referenceItems || [];
+            
+            // Rebuild dynamic sections
+            educationItems.forEach(item => {
+                const id = item.id;
+                const t = translations[currentLang];
+                const html = `
+                    <div class="repeater-item" id="edu-${id}">
+                        <div class="repeater-header">
+                            <strong>${t.titleEducation}</strong>
+                            <button class="remove-btn" onclick="removeEducation(${id})">${t.removeBtn}</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelDegree}</label>
+                            <input type="text" class="form-input" value="${item.degree || ''}" oninput="updateEducationData(${id}, 'degree', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelInstitution}</label>
+                            <input type="text" class="form-input" value="${item.institution || ''}" oninput="updateEducationData(${id}, 'institution', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelYearGrad}</label>
+                            <input type="text" class="form-input" value="${item.year || ''}" oninput="updateEducationData(${id}, 'year', this.value)">
+                        </div>
+                    </div>
+                `;
+                document.getElementById('educationList').insertAdjacentHTML('beforeend', html);
+            });
+            
+            experienceItems.forEach(item => {
+                const id = item.id;
+                const t = translations[currentLang];
+                const html = `
+                    <div class="repeater-item" id="exp-${id}">
+                        <div class="repeater-header">
+                            <strong>${t.titleExperience}</strong>
+                            <button class="remove-btn" onclick="removeExperience(${id})">${t.removeBtn}</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelJobTitle}</label>
+                            <input type="text" class="form-input" value="${item.title || ''}" oninput="updateExperienceData(${id}, 'title', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelCompany}</label>
+                            <input type="text" class="form-input" value="${item.company || ''}" oninput="updateExperienceData(${id}, 'company', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelPeriod}</label>
+                            <input type="text" class="form-input" value="${item.period || ''}" oninput="updateExperienceData(${id}, 'period', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelDescription}</label>
+                            <textarea class="form-textarea" oninput="updateExperienceData(${id}, 'description', this.value)">${item.description || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('experienceList').insertAdjacentHTML('beforeend', html);
+            });
+            
+            referenceItems.forEach(item => {
+                const id = item.id;
+                const t = translations[currentLang];
+                const html = `
+                    <div class="repeater-item" id="ref-${id}">
+                        <div class="repeater-header">
+                            <strong>${t.titleReferences}</strong>
+                            <button class="remove-btn" onclick="removeReference(${id})">${t.removeBtn}</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelRefName}</label>
+                            <input type="text" class="form-input" value="${item.name || ''}" oninput="updateReferenceData(${id}, 'name', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelRefTitle}</label>
+                            <input type="text" class="form-input" value="${item.title || ''}" oninput="updateReferenceData(${id}, 'title', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelRefOrg}</label>
+                            <input type="text" class="form-input" value="${item.org || ''}" oninput="updateReferenceData(${id}, 'org', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelRefPhone}</label>
+                            <input type="tel" class="form-input" value="${item.phone || ''}" oninput="updateReferenceData(${id}, 'phone', this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">${t.labelRefEmail}</label>
+                            <input type="email" class="form-input" value="${item.email || ''}" oninput="updateReferenceData(${id}, 'email', this.value)">
+                        </div>
+                    </div>
+                `;
+                document.getElementById('referencesList').insertAdjacentHTML('beforeend', html);
+            });
+            
+            if (data.currentTheme) {
+                switchTheme(data.currentTheme);
+            }
+            
+            if (data.currentLang) {
+                switchLanguage(data.currentLang);
+            }
+            
+            updatePreview();
+            alert(currentLang === 'en' ? 'Data loaded successfully!' : 'Amakuru yagaruwe neza!');
+        }
+
+        // ========================================
+        // PDF DOWNLOAD
+        // ========================================
+        function downloadPDF() {
+            window.print();
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            // Add initial placeholders
+            addEducation();
+            addExperience();
+            addReference();
+            addReference();
+            
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
